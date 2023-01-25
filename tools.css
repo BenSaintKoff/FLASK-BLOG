@@ -1,0 +1,89 @@
+
+/* #### CREATE DATABASE  ############ */
+1°)- Lancer l'interpreteur python
+2°)- Iporter db : from flaskblog import db
+3°)- db.create_all() --> pour créer la bd
+
+/* #### *************************** ############ */
+from flaskblog import app, db
+app.app_context().push()
+db.create_all()
+
+/* #### *************************** ############ */
+Pour creer des entées dans la base il faut:
+1°) from flaskblog import User, Post
+Ex: user_1 = User(username='Corey', email='C@demo.com', password='password')
+user_2 = User(username='JohnDoe', email='jd@demo.com', password='password')
+2°) db.session.add(user_1)
+3°) db.session.commit()
+/*# -----------------------------------------*/
+Sinon 
+2°) app.app_context().push()
+
+# *******************************************************
+>>> from flaskblog import app, db
+>>> app.app_context().push()
+>>> db.create_all()
+>>> from flaskblog import User, Post
+>>> user_1 = User(username='Corey', email='C@demo.com', password='password')   
+>>> user_2 = User(username='JohnDoe', email='jd@demo.com',password='password')
+
+>>> db.session.add(user_1)
+>>> db.session.add(user_2)
+>>> db.session.commit()
+# *******************************************************************
+
+/* #### *************************** ############ */
+Query  the base
+User.query.all() --> all
+User.query.first() --> first
+User.query.filter_by(username='Corey').all() --> filter
+user = User.query.filter_by(username='Corey').first() --> filter
+user.id --> pour acceder à un attribut
+user_ = User.query.get(1) --> par id
+
+# Creer un post
+post_1 = Post(title='Blog 1', content='First Post Content', user_id=user.id)
+post_2 = Post(title='Blog 2', content='Second Post Content', user_id=user.id)
+
+user.posts
+for post in user.posts
+
+post = Post.query.all()
+post.author
+/* #### *************************** ############ */
+# To delete all table
+db.drop_all()
+db.create_all() --> recreate
+User.query.all()
+
+
+/* # ------ Remarque ------------------------------*/
+ctr + D --> pour quitter l'interpreteur de PYTHON
+
+
+# -------- CREATE DATABASE WHEN STRUCTURED APP AS PACKAGE ------------
+from flaskblog import db, app
+from flaskblog.models import User, Post
+app.app_context().push()
+db.create_all()
+User.query.all()
+
+
+/* ## -------------- SECURE PASSWORD ----------------------------------*/
+pip install flask-bcrypt
+from flask_bcrypt import Bcrypt
+bcrypt = Bcrypt()
+bcrypt.generate_password_hash('testing)
+bcrypt.generate_password_hash('testing').decode('utf-8')
+hash_password = bcrypt.generate_password_hash('testing').decode('utf-8')  
+bcrypt.check_password_hash(hash_password, 'password')
+bcrypt.check_password_hash(hash_password, 'testing')
+
+/* -------- SHORTCUT TO SELECT ON VS CODE------------- */
+CTL + SHIFT + L
+
+/**************** PAGINATION ****************/
+>>> posts = Post.query.paginate(page=6, per_page=2)
+>>> for page in posts.iter_pages():
+    print(page)
